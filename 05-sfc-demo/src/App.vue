@@ -7,18 +7,14 @@
     </label>
     <div >
       <h1>Alex's To-Do List</h1>
-      <ul v-if="showComplete">
-        <li v-for="item in finishedToDoItems"
+      <ul>
+        <li v-for="item in displayedToDoItems"
             :key="'TODO'+item.id">
-          <to-do-item :item="item"
-                      @update-item="updateItem"></to-do-item>
-        </li>
-      </ul>
-      <ul v-else>
-        <li v-for="item in unfinishedToDoItems"
-            :key="'TODO'+item.id">
-          <to-do-item :item="item"
-                      @update-item="updateItem"></to-do-item>
+          <to-do-item :complete="item.complete"
+                      :id="item.id"
+                      :label="item.title"
+                      :description="item.description"
+                      @update-complete="completeItem"></to-do-item>
         </li>
       </ul>
     </div>
@@ -61,21 +57,18 @@ export default {
     }
   },
   methods:{
-    updateItem(item){
+    completeItem(item){
       this.toDoList.forEach((el, i) => {
         if(el.id === item.id){
-          this.$set(this.toDoList, i,item);
+          this.toDoList[i].complete = item.complete;
         }
       });
     },
   },
   computed:{
-    unfinishedToDoItems(){
-      return this.toDoList.filter(e=>!e.complete)
+    displayedToDoItems(){
+      return this.toDoList.filter(e=>e.complete===this.showComplete)
     },
-    finishedToDoItems(){
-      return this.toDoList.filter(e=>e.complete)
-    }
   }
 }
 </script>

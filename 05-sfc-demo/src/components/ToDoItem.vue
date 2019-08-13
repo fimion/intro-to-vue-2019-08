@@ -4,25 +4,25 @@
       <label>
         <input type="checkbox"
                @input="toggleCheckBox"
-               :checked="item.complete">
-        {{ item.title }}
+               :checked="complete">
+        {{ label }}
       </label>
     </h3>
-    <p>{{ item.description }}</p>
+    <p>{{ description }}</p>
   </div>
 </template>
 
 <script>
   export default {
     name: "ToDoItem",
-    props:['item'],
+    props:['id','complete', 'label', 'description'],
     methods:{
       toggleCheckBox(e){
-        let result = {...this.item}
-        result.complete = e.target.checked
-        this.$emit('update-item', result)
+        this.$emit('update-complete',
+                   {id:this.id,
+                    complete:e.target.checked})
       }
-    },
+    }
   }
 </script>
 
